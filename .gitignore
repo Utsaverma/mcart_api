@@ -1,0 +1,11 @@
+# Ignore log files
+*.log
+
+# Ignore build artifacts
+build/
+dist/
+
+# Ignore node_modules directory
+node_modules/
+mcart_venv/
+
