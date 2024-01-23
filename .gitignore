@@ -1,5 +1,6 @@
 # Ignore log files
 *.log
+*.csv
 
 # Ignore build artifacts
 build/

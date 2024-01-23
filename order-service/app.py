@@ -1,4 +1,4 @@
-# product-service/app.py
+# product-service/util.py
 
 from flask import Flask
 
