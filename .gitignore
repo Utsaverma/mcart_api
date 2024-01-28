@@ -1,6 +1,7 @@
 # Ignore log files
 *.log
 *.csv
+*.pyc
 
 # Ignore build artifacts
 build/

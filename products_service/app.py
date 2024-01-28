@@ -3,10 +3,13 @@ import os
 
 import boto3
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import pandas as pd
-from controller.search import search_by_title, search_by_id
+from controller.search import search_by_title, search_by_id, get_all_categories_util, \
+    search_by_category
 
 app = Flask(__name__)
+CORS(app)
 
 # @app.route('/')
 # def index():
@@ -22,15 +25,43 @@ app = Flask(__name__)
 #     return 'Product Service'
 
 
-@app.route('/search', methods=['GET'])
+# @app.route('/search', methods=['GET'])
+# def get_search_data():
+#     key = request.args.get('key')
+#     start_index = request.args.get('start', 0)
+#     size = request.args.get('size', 20)
+#     return jsonify(search_by_title(key, start_index, size))
+
+
+@app.route('/search', methods=['POST'])
 def get_search_data():
-    param1 = request.args.get('key')
-    return jsonify(search_by_title(param1))
+    data = request.json
+
+    key = data.get('key')
+    start_index = data.get('start', 0)
+    size = data.get('size', 20)
+    filters = data.get('filters')
+    print(filters)
+    return jsonify(search_by_title(key, start_index, size, filters))
 
 @app.route('/searchById', methods=['GET'])
 def get_search_by_id():
     param1 = request.args.get('id')
     return jsonify(search_by_id(param1))
+
+@app.route('/searchByCategory', methods=['GET'])
+def get_search_by_category():
+    category = request.args.get('category')
+    size = request.args.get('size')
+    start_index = request.args.get('start')
+    print(size)
+    print(start_index)
+    print(category)
+    return jsonify(search_by_category(category, size, start_index))
+
+@app.route('/getAllCategories', methods=['GET'])
+def get_all_categories():
+    return jsonify(get_all_categories_util())
 
 
 if __name__ == '__main__':

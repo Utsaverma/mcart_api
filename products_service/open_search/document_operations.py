@@ -1,6 +1,7 @@
 import logging
 
-from opensearchpy import Search
+from opensearchpy import Search, Q
+from opensearchpy.helpers.aggs import Composite, Terms
 
 from .product_model import Product, to_dict
 
@@ -50,21 +51,54 @@ class DocumentOperations:
             resp.append(to_dict(hit))
         return resp[0]
 
-    def get_documents_by_title(self, key, size=20, from_=0):
+    def get_documents_by_title(self, key, size=20, from_=0, filters=None):
         search = self.search_client.query("match", title=key)
+        if filters:
+            if filters['gender']:
+                search = search.filter("match", gender=filters['gender'])
+            if filters['sort']:
+                search = search.sort({"price": {"order": filters['sort']}})
+
         result = search.extra(size=size, from_=from_).execute()
         resp = []
         for hit in result:
             resp.append(to_dict(hit))
         return resp
 
-    # def update_document(self, document_id, updated_fields):
-    #     updated_document = {"doc": updated_fields}
-    #     self.opensearch_client.opensearch.update(index=self.index_name, id=document_id,
-    #                                              body=updated_document)
+    def get_all_categories(self):
+        script = {
+            "source": "doc['category.keyword'].value + '|' + doc['sub_category.keyword'].value",
+            "lang": "painless"
+        }
+
+        distinct_values_aggregation = {
+            "terms": {
+                "script": script,
+                "size": 10000
+            }
+        }
+
+        self.search_client.aggs.bucket('distinct_combinations', 'terms',
+                                       **distinct_values_aggregation)
+
+        result = self.search_client.execute()
+
+        distinct_combinations = [bucket.key.split('|') for bucket in
+                                 result.aggs.distinct_combinations.buckets]
+
+        return distinct_combinations
 
     def delete_document(self, document_id):
         response = self.opensearch_client.delete(
             index=self.index_name,
             id=document_id
         )
+
+    def get_documents_by_category(self, sub_category, size=20, from_=0):
+        search = self.search_client.query("match", sub_category=sub_category)
+
+        result = search.extra(size=size, from_=from_).execute()
+        resp = []
+        for hit in result:
+            resp.append(to_dict(hit))
+        return resp
