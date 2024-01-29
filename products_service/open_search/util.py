@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def open_search_util():
+def get_document_util():
     host_name = os.environ['HOST']
     region = os.environ['REGION']
 
@@ -33,8 +33,8 @@ def open_search_util():
     #     logger.error("An exception occurred: %s", err)
 
     # documents_util.get_document_by_id('B0C4RMF5PZ')
-    documents_util.get_documents_by_title('T-Shirt')
-
+    # documents_util.get_documents_by_title('T-Shirt')
+    return documents_util
 
 def bulk_insert(opensearch_client):
     document_list = get_all_data()
@@ -66,6 +66,6 @@ def get_all_data():
 
 
 if __name__ == "__main__":
-    open_search_util()
+    get_document_util()
     # get_all_data()
     pass

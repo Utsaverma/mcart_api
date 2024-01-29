@@ -1,6 +1,6 @@
 # product-service/Dockerfile
 
-FROM python:3.8-slim
+FROM python:3.8
 
 WORKDIR /app
 

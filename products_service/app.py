@@ -4,7 +4,6 @@ import os
 import boto3
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import pandas as pd
 from controller.search import search_by_title, search_by_id, get_all_categories_util, \
     search_by_category
 
@@ -41,23 +40,22 @@ def get_search_data():
     start_index = data.get('start', 0)
     size = data.get('size', 20)
     filters = data.get('filters')
-    print(filters)
     return jsonify(search_by_title(key, start_index, size, filters))
+
 
 @app.route('/searchById', methods=['GET'])
 def get_search_by_id():
     param1 = request.args.get('id')
     return jsonify(search_by_id(param1))
 
+
 @app.route('/searchByCategory', methods=['GET'])
 def get_search_by_category():
     category = request.args.get('category')
     size = request.args.get('size')
     start_index = request.args.get('start')
-    print(size)
-    print(start_index)
-    print(category)
     return jsonify(search_by_category(category, size, start_index))
+
 
 @app.route('/getAllCategories', methods=['GET'])
 def get_all_categories():
@@ -65,4 +63,5 @@ def get_all_categories():
 
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    port = os.environ['PORT'] if os.environ['PORT'] else 5000
+    app.run(port=port)
