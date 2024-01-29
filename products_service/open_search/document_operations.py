@@ -1,8 +1,6 @@
 import logging
 
-from opensearchpy import Search, Q
-from opensearchpy.helpers.aggs import Composite, Terms
-
+from opensearchpy import Search
 from .product_model import Product, to_dict
 
 logging.basicConfig(level=logging.INFO)

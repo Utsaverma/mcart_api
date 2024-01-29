@@ -15,8 +15,14 @@ logger = logging.getLogger(__name__)
 def get_document_util():
     host_name = os.environ['HOST']
     region = os.environ['REGION']
+    access_key = os.environ['ACCESS_KEY']
+    secret_key = os.environ['SECRET_KEY']
 
-    credentials = boto3.Session().get_credentials()
+    # credentials = boto3.Session().get_credentials()
+    credentials = boto3.Session(
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
+        region_name=region).get_credentials()
     auth = AWSV4SignerAuth(credentials, region)
 
     opensearch_obj = OpenSearchClient(host_name, auth)

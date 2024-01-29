@@ -1,4 +1,4 @@
-from products_service.open_search.util import get_document_util
+from open_search.util import get_document_util
 
 
 def search_by_title(title, start_index=0, size=20, filters=None):

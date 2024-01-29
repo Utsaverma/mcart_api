@@ -1,7 +1,5 @@
-# product-service/util.py
 import os
 
-import boto3
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from controller.search import search_by_title, search_by_id, get_all_categories_util, \
@@ -31,6 +29,10 @@ CORS(app)
 #     size = request.args.get('size', 20)
 #     return jsonify(search_by_title(key, start_index, size))
 
+
+@app.route('/')
+def index():
+    return "success"
 
 @app.route('/search', methods=['POST'])
 def get_search_data():
@@ -63,5 +65,5 @@ def get_all_categories():
 
 
 if __name__ == '__main__':
-    port = os.environ['PORT'] if os.environ['PORT'] else 5000
-    app.run(port=port)
+    port = os.environ.get('PORT', '') if os.environ.get('PORT', '') else 5000
+    app.run(host='0.0.0.0', port=port)
