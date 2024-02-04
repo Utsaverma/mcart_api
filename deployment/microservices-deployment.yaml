@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcart-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mcart-api
+  template:
+    metadata:
+      labels:
+        app: mcart-api
+    spec:
+      containers:
+        - name: product-service
+          image: utsavaishuverma/product-service:latest
+          ports:
+            - containerPort: 5000
