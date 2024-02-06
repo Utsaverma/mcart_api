@@ -1,4 +1,4 @@
-# order-service/Dockerfile
+# order_service/Dockerfile
 
 FROM python:3.8
 
@@ -12,7 +12,7 @@ ENV PORT=5001 \
 WORKDIR /
 
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 EXPOSE 5001

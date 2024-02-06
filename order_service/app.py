@@ -1,18 +1,21 @@
+# order_service
 import os
 from datetime import datetime
 
 from flask import Flask, jsonify, Blueprint
+from flask_compress import Compress
 from flask_cors import CORS
 from flask_restx import Api
 import settings
 
 APP = Flask(__name__)
+COMPRESS = Compress()
 
-restx_blueprint = Blueprint('api', __name__, url_prefix='/mcart/v1/products')
+restx_blueprint = Blueprint('api', __name__, url_prefix='/mcart/v1/orders')
 MCART_API = Api(restx_blueprint,
                 version='1.0',
-                title='MCART PRODUCTS RELATED API',
-                description='A description of my products API')
+                title='MCART ORDERS RELATED API',
+                description='A description of my orders API')
 
 
 def configure_app(flask_app):
@@ -28,23 +31,20 @@ def configure_app(flask_app):
 def initialize_app(flask_app):
     """Initializes the flask application"""
 
-    from views.products import NS as PRODUCTS_NS
-    from views.products_by_id import NS as PRODUCTS_SEARCH_BY_ID_NS
-    from views.products_by_category import NS as PRODUCTS_SEARCH_BY_CATEGORY_NS
-    from views.product_categories import NS as PRODUCT_CATEGORIES_NS
+    from views.orders import NS as ORDERS_NS
+    from views.order_by_user import NS as ORDERS_BY_USER_NS
 
     configure_app(flask_app)
     CORS(flask_app)
 
-    MCART_API.add_namespace(PRODUCTS_NS)
-    MCART_API.add_namespace(PRODUCTS_SEARCH_BY_ID_NS)
-    MCART_API.add_namespace(PRODUCTS_SEARCH_BY_CATEGORY_NS)
-    MCART_API.add_namespace(PRODUCT_CATEGORIES_NS)
+    MCART_API.add_namespace(ORDERS_NS)
+    MCART_API.add_namespace(ORDERS_BY_USER_NS)
 
     flask_app.register_blueprint(restx_blueprint)
+    COMPRESS.init_app(flask_app)
 
 
-@APP.route("/mcart/v1/products/status", methods=["GET"])
+@APP.route("/mcart/v1/orders/status", methods=["GET"])
 def status():
     """
     Returns a simple message indicating the service is working as intended.
@@ -53,7 +53,7 @@ def status():
         status="healthy",
         serverTime=datetime.now(),
         version=settings.MCART_API_VERSION,
-        notes="MCART PRODUCTS SERVICE RUNNING"
+        notes="MCART ORDERS SERVICE RUNNING"
     ))
 
 
@@ -66,6 +66,7 @@ def _after_request(response):
 
 
 initialize_app(APP)
+
 
 if __name__ == '__main__':
     port = os.environ.get('PORT', '') if os.environ.get('PORT', '') else settings.FLASK_SERVER_PORT
