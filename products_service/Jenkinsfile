@@ -20,16 +20,11 @@ pipeline {
      stage('Docker Build') {
          steps{
              script {
-//                 sh("eval \$(aws ecr get-login --no-include-email | sed 's|https://||')")
-//                  dir('/products_service') {
-//                     sh 'pwd'
-//                     sh "docker build -t ${IMAGE_REPO_NAME} ."
-//                 }
-                    sh "pwd"
-                    dir('products_service') {
-                      sh "pwd"
-                    }
-                    sh "pwd"
+                sh("eval \$(aws ecr get-login --no-include-email | sed 's|https://||')")
+                 dir('products_service') {
+                    sh 'pwd'
+                    sh "docker build -t ${IMAGE_REPO_NAME} ."
+                }
              }
          }
      }
