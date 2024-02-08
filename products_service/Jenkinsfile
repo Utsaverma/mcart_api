@@ -21,7 +21,10 @@ pipeline {
          steps{
              script {
                 sh("eval \$(aws ecr get-login --no-include-email | sed 's|https://||')")
-                sh "docker build -t ${IMAGE_REPO_NAME} -f products_service/Dockerfile ."
+                 dir('/products_service') {
+                    sh 'pwd'
+                    sh "docker build -t ${IMAGE_REPO_NAME} ."
+                }
              }
          }
      }
