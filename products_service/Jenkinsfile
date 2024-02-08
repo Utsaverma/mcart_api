@@ -2,15 +2,27 @@ pipeline {
      agent {
         label 'wsl'
      }
+     tools {
+        git  "wsl_git"
+     }
      environment {
          AWS_ACCOUNT_ID="637423238337"
          AWS_DEFAULT_REGION="ap-south-1"
          IMAGE_REPO_NAME="products-container"
          IMAGE_TAG="latest"
          REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+         GIT_REPO_NAME = "https://github.com/Utsaverma/mcart_api.git"
     }
 
  stages {
+
+     stage('Checkout') {
+            steps {
+                script {
+                    bat "wsl git clone ${GIT_REPO_NAME}"
+                }
+            }
+        }
 
      stage('Logging into AWS ECR') {
          steps {
