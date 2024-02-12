@@ -4,6 +4,7 @@ pipeline {
      }
      tools {
         git  "wsl_git"
+        node "wsl_node"
      }
      environment {
          AWS_ACCOUNT_ID="637423238337"
