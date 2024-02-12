@@ -10,4 +10,8 @@ dist/
 # Ignore node_modules directory
 node_modules/
 mcart_venv/
+**/order_service_venv/
+
+**/node_modules/
+**/.serverless/
 
