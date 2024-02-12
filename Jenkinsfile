@@ -44,7 +44,7 @@ pipeline {
              script {
                      dir('order_service_api') {
                         sh 'pwd'
-                        sh 'node -v
+                        sh 'node -v'
                         sh "serverless deploy --force"
                      }
                  }
