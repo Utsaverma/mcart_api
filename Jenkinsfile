@@ -4,9 +4,10 @@ pipeline {
      }
      tools {
         git  "wsl_git"
-        node "wsl_node"
+        nodejs "wsl_node"
      }
      environment {
+         NODE_VERSION = '14.17.5'
          AWS_ACCOUNT_ID="637423238337"
          AWS_DEFAULT_REGION="ap-south-1"
          IMAGE_REPO_NAME="products-container"
