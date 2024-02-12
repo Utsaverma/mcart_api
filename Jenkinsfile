@@ -37,6 +37,16 @@ pipeline {
                  }
              }
          }
+     stage('Deploy to serverless') {
+         steps{
+             script {
+                     dir('order_service_api') {
+                        sh 'pwd'
+                        sh "serverless deploy --force"
+                     }
+                 }
+             }
+         }
 
      stage('Deploy to ECS') {
          steps{
