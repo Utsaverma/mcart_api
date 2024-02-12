@@ -45,6 +45,8 @@ pipeline {
                      dir('order_service_api') {
                         sh 'pwd'
                         sh 'node -v'
+                        sh 'serverless plugin install -n serverless-wsgi'
+                        sh 'serverless plugin install -n serverless-python-requirements'
                         sh "serverless deploy --force"
                      }
                  }
