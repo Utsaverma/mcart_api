@@ -57,7 +57,7 @@ def get_order_details_by_user():
 def save():
     """saves orders"""
     logger.info(f"save order deatils with ")
-    logger.info({request.json})
+    logger.info(request.json)
     return jsonify(save_order(request.json))
 
 
@@ -70,5 +70,5 @@ def _after_request(response):
 
 
 if __name__ == '__main__':
-    port = os.environ.get('PORT', '') if os.environ.get('PORT', '') else 5000
+    port = os.environ.get('PORT', '') if os.environ.get('PORT', '') else 5001
     app.run(host='0.0.0.0', port=port)
