@@ -14,7 +14,7 @@ pipeline {
          IMAGE_TAG="latest"
          REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
          CLUSTER = "mcart-cluster"
-         SERVICE = "products-service-task-v2"
+         SERVICE = "mcart-products-service"
     }
 
  stages {
