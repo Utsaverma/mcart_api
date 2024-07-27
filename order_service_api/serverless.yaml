@@ -1,0 +1,52 @@
+service: order-service-api
+
+custom:
+  pythonRequirements:
+    useDownloadCache: false
+    useStaticCache: false
+    dockerizePip: false
+    usePipenv: false
+    slim: true
+
+  wsgi:
+    app: order_service_api.app.app
+    packRequirements: false
+
+package:
+  patterns:
+    - '!**'
+    - order_service_api/**
+
+plugins:
+  - serverless-wsgi
+  - serverless-python-requirements
+
+
+provider:
+  name: aws
+  runtime: python3.8
+  timeout: 30
+  region: ap-south-1
+  deploymentBucket: mcart-deploy-serverless-${self:provider.region}
+  stage: ${opt:stage,'dev'}
+
+
+functions:
+  order-service-api:
+    name: order-service-api-${self:provider.stage}
+    handler: wsgi_handler.handler
+    memorySize: 512
+    timeout: 30
+    environment:
+      ENVIRONMENT: ${self:provider.stage}
+      REGION: ${self:provider.region}
+      ACCESS_KEY: <ACCESS_KEY>
+      SECRET_KEY: <SECRET_KEY>
+
+    events:
+      - http:
+          path: /
+          method: ANY
+      - http:
+          path: /{proxy+}
+          method: ANY
